@@ -1448,6 +1448,9 @@ function Install-Profile {
         } elseif ($osVersion -eq "Win10" -and $victim.IsPresent){
             VM-Write-Log "INFO" "Windows 10 Victim detected, setting win10victimconfig.xml for configuration file."
             Copy-Item $(Join-Path $configSource "win10victimconfig.xml") $configPath -Force
+        } elseif ($osVersion -eq "WinSrv2022" -and -not $victim.IsPresent){
+            VM-Write-Log "INFO" "Windows Server 2022 detected, setting winsrv2022.xml for configuration file."
+            Copy-Item $(Join-Path $configSource "winsrv2022config.xml") $configPath -Force
         } elseif ($osVersion -eq "Win10" -and $victim.IsPresent){
             VM-Write-Log "INFO" "Windows 10 Victim detected, setting win10victimconfig.xml for configuration file."
             Copy-Item $(Join-Path $configSource "win10victimconfig.xml") $configPath -Force
