@@ -1046,11 +1046,11 @@ function Check-BoxstarterConfig {
     $Boxstarter.AutoLogin = $true
     $Boxstarter.SuppressLogging = $True
     $global:VerbosePreference = "SilentlyContinue"
-    Set-BoxstarterConfig -NugetSources "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/vm-packages/api/v2;https://chocolatey.org/api/v2"
+    Set-BoxstarterConfig -NugetSources "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2"
 }
 
 function Check-ChocoConfig {
-    choco sources add -n="vm-packages" -s "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/vm-packages/api/v2;https://chocolatey.org/api/v2" --priority 1
+    choco sources add -n="vm-packages" -s "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2" --priority 1
     choco feature enable -n allowGlobalConfirmation
     choco feature enable -n allowEmptyChecksums
     $cache = "${Env:LocalAppData}\ChocoCache"
@@ -1102,7 +1102,7 @@ function Get-PackagesFromProfile {
 }
 
 function Get-AvailablePackages {
-    $apiUrl = "https://www.myget.org/F/vm-packages/Packages"
+    $apiUrl = "https://www.myget.org/F/man715/Packages"
     $destination = Join-Path $PSScriptRoot "./available_packages.xml"
     $blockList = @("flarevm.installer.vm", "common.vm", "debloat.vm", "installer.vm")
 
@@ -1445,6 +1445,9 @@ function Install-Profile {
         if ($osVersion -eq "Win10" -and -not $victim.IsPresent){
             VM-Write-Log "INFO" "Windows 10 detected, setting win10config.xml for configuration file."
             Copy-Item $(Join-Path $configSource "win10config.xml") $configPath -Force
+        } elseif ($osVersion -eq "Win10" -and $victim.IsPresent){
+            VM-Write-Log "INFO" "Windows 10 Victim detected, setting win10victimconfig.xml for configuration file."
+            Copy-Item $(Join-Path $configSource "win10victimconfig.xml") $configPath -Force
         } elseif ($osVersion -eq "Win10" -and $victim.IsPresent){
             VM-Write-Log "INFO" "Windows 10 Victim detected, setting win10victimconfig.xml for configuration file."
             Copy-Item $(Join-Path $configSource "win10victimconfig.xml") $configPath -Force

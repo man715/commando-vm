@@ -82,7 +82,7 @@
     <package name="kerbrute.vm" />
     <package name="mailsniper.vm" />
     <package name="mfasweep.vm" />
-    <package name="minidump.vm" />
+    <!-- <package name="minidump.vm" /> -->
     <package name="microburst.vm" />
     <package name="netgpppassword.vm" />
     <package name="nmap.vm" />
