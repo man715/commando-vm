@@ -1441,6 +1441,12 @@ function Install-Profile {
         # Set Windows OS VM configuration file
         $configPath = Join-Path ${Env:VM_COMMON_DIR} "config.xml"
         $configSource = Join-Path $PSScriptRoot "Profiles\Configs"
+        
+        if (Test-Path $(Join-Path $configSource "CustomStartLayout.xml")) {
+            VM-Write-Log "INFO" "Copying over the Custom Layout configuration file."
+            Copy-Item $(Join-Path $configSource "CustomStartLayout.xml") $configPath -Force
+        }
+
         $osVersion = VM-Get-WindowsVersion
         if ($osVersion -eq "Win10" -and -not $victim.IsPresent){
             VM-Write-Log "INFO" "Windows 10 detected, setting win10config.xml for configuration file."
