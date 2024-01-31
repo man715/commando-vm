@@ -966,7 +966,7 @@ function Check-DefenderAndTamperProtection {
 }
 function Check-SupportedOS {
     $osVersion = (Get-WmiObject -class Win32_OperatingSystem).BuildNumber
-    $testedVersions = @(19045, 22621)
+    $testedVersions = @(19045, 22621, 20348)
     if ($osVersion -notin $testedVersions) {
         return $false
     } else {
@@ -1443,6 +1443,7 @@ function Install-Profile {
         $configSource = Join-Path $PSScriptRoot "Profiles\Configs"
         
         if (Test-Path $(Join-Path $configSource "CustomStartLayout.xml")) {
+            $customLayoutPath = Join-Path ${Env:VM_COMMON_DIR} "CustomStartLayout.xml"
             VM-Write-Log "INFO" "Copying over the Custom Layout configuration file."
             Copy-Item $(Join-Path $configSource "CustomStartLayout.xml") $configPath -Force
         }
