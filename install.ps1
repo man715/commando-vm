@@ -1445,7 +1445,7 @@ function Install-Profile {
         if (Test-Path $(Join-Path $configSource "CustomStartLayout.xml")) {
             $customLayoutPath = Join-Path ${Env:VM_COMMON_DIR} "CustomStartLayout.xml"
             VM-Write-Log "INFO" "Copying over the Custom Layout configuration file."
-            Copy-Item $(Join-Path $configSource "CustomStartLayout.xml") $configPath -Force
+            Copy-Item $(Join-Path $configSource "CustomStartLayout.xml") $customLayoutPath -Force
         }
 
         $osVersion = VM-Get-WindowsVersion
