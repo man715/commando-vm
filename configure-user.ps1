@@ -7,30 +7,6 @@ try {
     $installedPackages = (VM-Get-InstalledPackages).Name
     $configPath = Join-Path ${Env:VM_COMMON_DIR} "packages.xml" -Resolve
     $configXml = [xml](Get-Content $configPath)
-    $packagesToInstall = $configXml.config.packages.package.name | Where-Object { $installedPackages -notcontains $_ }
-
-    # List packages to install
-    Write-Host "[+] Packages to install:"
-    foreach ($package in $packagesToInstall) {
-        Write-Host "`t[+] $package"
-    }
-    Start-Sleep 1
-
-    # Install the packages
-    try {
-        foreach ($package in $packagesToInstall) {
-            VM-Write-Log "INFO" "Installing: $package"
-            choco install "$package" -y
-            if ($LASTEXITCODE) {
-              VM-Write-Log "ERROR" "`t$package has not been installed"
-            } else {
-              VM-Write-Log "INFO" "`t$package has been installed"
-            }
-        }
-    } catch {
-        VM-Write-Log-Exception $_
-    }
-    VM-Write-Log "INFO" "Packages installation complete"
 
     ## Configure taskbar with custom Start Layout if it exists.
     $customLayout = Join-Path ${Env:VM_COMMON_DIR} "CustomStartLayout.xml"
