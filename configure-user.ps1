@@ -39,90 +39,12 @@ try {
     # Configure PowerShell Logging
     VM-Configure-PS-Logging
 
-    # Configure Desktop\Tools folder with a custom icon if it exists
-    $iconPath = Join-Path $Env:VM_COMMON_DIR "vm.ico"
-    if (Test-Path $iconPath) {
-        $folderPath = $Env:TOOL_LIST_DIR
-        # Set the icon
-        if (Test-Path -Path $folderPath -PathType Container) {
-            # Full path to the desktop.ini file inside the folder
-            $desktopIniPath = Join-Path -Path $folderPath -ChildPath 'desktop.ini'
+    # Copy Desktop\Tools folder
+    $userToolsDirectory = gci C:\Users | ? {$_.Name -ne 'Public' -and $_.Name -ne 'Administrator'} | ForEach-Object {Test-Path $_\Desktop\Tools} | Select-Object -First
+    Copy-Item -Force $userToolsDirectory $env:USERPROFILE\Desktop
 
-            # Check if desktop.ini already exists
-            if (-Not (Test-Path -Path $desktopIniPath)) {
-                    # Create an empty desktop.ini if it doesn't exist
-                    Set-Content -Path $desktopIniPath -Value ''
-                }
-
-                # Make the folder "system" to enable custom settings like icon change
-                Start-Process "attrib" -ArgumentList "+s $folderPath" -Wait
-
-                # Write the needed settings into desktop.ini
-                Add-Content -Path $desktopIniPath -Value "[.ShellClassInfo]"
-                Add-Content -Path $desktopIniPath -Value ("IconResource=$iconPath,0")
-
-                # Make the desktop.ini file hidden and system
-                Start-Process "attrib" -ArgumentList " +h +s $desktopIniPath" -Wait
-            }
-    }
     # Refresh the desktop
     VM-Refresh-Desktop
-
-    # Remove Chocolatey cache
-    $cache = "${Env:LocalAppData}\ChocoCache"
-    Remove-Item $cache -Recurse -Force
-
-    # Construct failed packages file path
-    $failedPackages = Join-Path $Env:VM_COMMON_DIR "failed_packages.txt"
-    $failures = @{}
-
-    # Check and list failed packages from "lib-bad"
-    $chocoLibBad = Join-Path ${Env:ProgramData} "chocolatey\lib-bad"
-    if ((Test-Path $chocoLibBad) -and (Get-ChildItem -Path $chocoLibBad | Measure-Object).Count -gt 0) {
-        Get-ChildItem -Path $chocoLibBad | Foreach-Object {
-            $failures[$_.Name] = $true
-        }
-    }
-
-    # Cross-compare packages to install versus installed packages to find failed packages
-    $installedPackages = VM-Get-InstalledPackages
-    foreach ($package in $packagesToInstall) {
-        if ($installedPackages.Name -notcontains $package) {
-            $failures[$package] = $true
-        }
-    }
-
-    # Write installed packages to log file
-    foreach ($package in $installedPackages){
-        VM-Write-Log "INFO" "Package installed:  $($package.Name) | $($package.Version)"
-    }
-
-    # Write each failed package to failure file
-    foreach ($package in $failures.Keys) {
-        VM-Write-Log "ERROR" "Failed to install: $package"
-        Add-Content $failedPackages $package
-    }
-
-    # Log additional info if we found failed packages
-    $logPath = Join-Path ${Env:VM_COMMON_DIR} "log.txt"
-    if ((Test-Path $failedPackages)) {
-        VM-Write-Log "ERROR" "For each failed package, you may attempt a manual install via: choco install -y <package_name>"
-        VM-Write-Log "ERROR" "Failed package list saved to: $failedPackages"
-        VM-Write-Log "ERROR" "Please check the following logs for additional errors:"
-        VM-Write-Log "ERROR" "`t$logPath (this file)"
-        VM-Write-Log "ERROR" "`t%PROGRAMDATA%\chocolatey\logs\chocolatey.log"
-        VM-Write-Log "ERROR" "`t%LOCALAPPDATA%\Boxstarter\boxstarter.log"
-    }
-
-    # Display installer log if available
-    if ((Test-Path $logPath)) {
-        Write-Host "[-] Please check the following logs for any errors:" -ForegroundColor Yellow
-        Write-Host "`t[-] $logPath" -ForegroundColor Yellow
-        Write-Host "`t[-] %PROGRAMDATA%\chocolatey\logs\chocolatey.log" -ForegroundColor Yellow
-        Write-Host "`t[-] %LOCALAPPDATA%\Boxstarter\boxstarter.log" -ForegroundColor Yellow
-        Start-Sleep 5
-        & notepad.exe $logPath
-    }
 
     # Let users know installation is complete by setting lock screen & wallpaper background, playing win sound, and display message box
 
@@ -189,13 +111,7 @@ public class VMBackground
     # Create label
     $label = New-Object System.Windows.Forms.Label
     $label.Text = @"
-Install Complete!
-
-Please review %VM_COMMON_DIR%\log.txt for any errors.
-
-For any package related issues, please submit to github.com/mandiant/vm-packages
-
-For any install related issues, please submit to the VM repo
+Configuration Complete!
 
 Thank you!
 "@
