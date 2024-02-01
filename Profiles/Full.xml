@@ -9,7 +9,7 @@
   </envs>
   <packages>
     <package name="notepadplusplus.vm" />
-    <package name="7zip-15-05.vm" />
+    <package name="7zip-23-01.vm" />
     <package name="azurehound.vm" />
     <package name="bloodhound.vm" />
     <package name="cmder.vm" />
@@ -139,5 +139,6 @@
     <package name="hfsexplorer" />
     <package name="unxutils" />
     <package name="neo4jdesktop.vm" />
+    <package name="mobaxterm.vm" />
   </packages>
 </config>
