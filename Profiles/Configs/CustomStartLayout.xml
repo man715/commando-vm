@@ -17,8 +17,8 @@
         <taskbar:TaskbarPinList>
           <taskbar:DesktopApp DesktopApplicationLinkPath="%AppData%\Microsoft\Windows\Start Menu\Programs\System Tools\File Explorer.lnk"/>
           <taskbar:DesktopApp DesktopApplicationLinkPath="%RAW_TOOLS_DIR%\Admin Command Prompt.lnk"/>
+          <taskbar:DesktopApp DesktopApplicationLinkPath="%RAW_TOOLS_DIR%\Admin PowerShell.lnk"/>
           <taskbar:DesktopApp DesktopApplicationLinkPath="%TOOL_LIST_DIR%\Utilities\CyberChef.lnk"/>
-          <taskbar:DesktopApp DesktopApplicationLinkPath="%TOOL_LIST_DIR%\Networking\FakeNet-NG.lnk"/>
           <taskbar:DesktopApp DesktopApplicationLinkPath="%ProgramData%\chocolatey\bin\notepad++.exe"/>
           <taskbar:DesktopApp DesktopApplicationLinkPath="%TOOL_LIST_DIR%\Utilities\VisualStudio.lnk"/>
         </taskbar:TaskbarPinList>
