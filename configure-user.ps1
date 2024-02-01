@@ -3,10 +3,7 @@ $global:VerbosePreference = "SilentlyContinue"
 Import-Module vm.common -Force -DisableNameChecking
 
 try {
-    # Gather packages to install
-    $installedPackages = (VM-Get-InstalledPackages).Name
-    $configPath = Join-Path ${Env:VM_COMMON_DIR} "packages.xml" -Resolve
-    $configXml = [xml](Get-Content $configPath)
+
 
     ## Configure taskbar with custom Start Layout if it exists.
     $customLayout = Join-Path ${Env:VM_COMMON_DIR} "CustomStartLayout.xml"
@@ -28,9 +25,11 @@ try {
     # Configure PowerShell Logging
     VM-Configure-PS-Logging
 
-    # Copy Desktop\Tools folder
+    # PowerShellCopy Desktop\Tools folder
+    $folderPath = $(Join-Path $ENV:USERPROFILE "Desktop\Tools")
     $userToolsDirectory = Get-ChildItem C:\Users | Where-Object {$_.Name -ne 'Public' -and $_.Name -ne 'Administrator' -and $(Test-Path $(Join-Path $_.FullName 'Desktop\Tools'))} | Select-Object -First 1
     Copy-Item -Force -Recurse $(Join-Path $userToolsDirectory.FullName 'Desktop\Tools') $env:USERPROFILE\Desktop
+    Start-Process "attrib" -ArgumentList "+s $folderPath" -Wait
 
     # Refresh the desktop
     VM-Refresh-Desktop
