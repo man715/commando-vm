@@ -134,11 +134,12 @@
     <package name="winscp.vm" />
     <package name="jre8" />
     <package name="tortoisesvn" />
-    <package name="qbittorrent" />
+    <!-- <package name="qbittorrent" /> -->
     <package name="dbeaver" />
     <package name="hfsexplorer" />
     <package name="unxutils" />
     <package name="neo4jdesktop.vm" />
     <package name="mobaxterm.vm" />
+    <package name="heidisql.vm" />
   </packages>
 </config>
