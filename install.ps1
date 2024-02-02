@@ -1046,11 +1046,11 @@ function Check-BoxstarterConfig {
     $Boxstarter.AutoLogin = $true
     $Boxstarter.SuppressLogging = $True
     $global:VerbosePreference = "SilentlyContinue"
-    Set-BoxstarterConfig -NugetSources "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2"
+    Set-BoxstarterConfig -NugetSources "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2;https://www.myget.org/F/vm-packages/api/v2"
 }
 
 function Check-ChocoConfig {
-    choco sources add -n="vm-packages" -s "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2" --priority 1
+    choco sources add -n="vm-packages" -s "$env:USERPROFILE\Desktop;.;https://www.myget.org/F/man715/api/v2;https://chocolatey.org/api/v2;https://www.myget.org/F/vm-packages/api/v2" --priority 1
     choco feature enable -n allowGlobalConfirmation
     choco feature enable -n allowEmptyChecksums
     $cache = "${Env:LocalAppData}\ChocoCache"
